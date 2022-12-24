@@ -1,0 +1,22 @@
+{
+  "name": "discordstockbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node .",
+    "build": "ts-cleaner && tsc",
+    "dev": "ts-cleaner && tsc && node ."
+  },
+  "author": "tkrmagid",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.1",
+    "better-sqlite3": "^8.0.1",
+    "colors": "^1.4.0",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "quick.db": "^9.0.8"
+  }
+}
