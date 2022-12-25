@@ -42,7 +42,7 @@ const getdata = (market: marketType) => new Promise<stockType[]>(async (res, rej
   }
   if (stocklist.length == 0) return rej(`${market} 주식 오류발생`);
   STOCK[market] = stocklist;
-  Logger.log(`${market} 주식 새로고침 완료`);
+  Logger.info(`${market} 주식 새로고침 완료`);
   return res(stocklist);
 });
 
@@ -50,14 +50,14 @@ const getdata = (market: marketType) => new Promise<stockType[]>(async (res, rej
   const market: marketType[] = [ "KOSPI", "KOSDAQ", "NASDAQ" ];
   for (let i of market) {
     getdata(i).then((val) => {
-      Logger.log(`${i} 주식 초기화완료 [${val.length}개]`);
+      Logger.info(`${i} 주식 초기화완료 [${val.length}개]`);
       // writeFileSync(i+"_DATA.ts", `let t = [\n  "${val.map(s => s.stockName).join('",\n  "')}"\n];\n`, "utf8");
     }).catch(Logger.error);
   }
   setInterval(() => {
     for (let i of market) {
       getdata(i).then((val) => {
-        Logger.log(`${i} 주식 초기화완료 [${val.length}개]`);
+        Logger.info(`${i} 주식 초기화완료 [${val.length}개]`);
       }).catch(Logger.error);
     }
   }, 1000 * 60 * 60);

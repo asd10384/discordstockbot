@@ -8,9 +8,9 @@ export const onReady = () => {
   let actlist: { text: string, time: number }[] = eval(process.env.ACTIVITY || '[{ "text": `/help`, time: 10 }, { "text": `${prefix}help`, "time": 10 }]');
 
   Logger.ready(`Ready! ${client.user.username}`);
-  Logger.log(`prefix: ${prefix}`);
-  Logger.log(`Activity: ${JSON.stringify(actlist)}`);
-  Logger.log(`로그확인: ${client.debug}`);
+  Logger.ready(`prefix: ${prefix}`);
+  Logger.ready(`Activity: ${JSON.stringify(actlist)}`);
+  Logger.ready(`로그확인: ${client.debug}`);
 
   if (process.env.REFRESH_SLASH_COMMAND_ON_READY === "true") handler.registCachedCommands(client);
 

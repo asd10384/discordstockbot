@@ -13,7 +13,7 @@ export const onMessageCreate = async (message: Message) => {
       if (!command || !command.messageRun) return handler.err(message, commandName);
       command.messageRun(message, args);
     } catch(error) {
-      if (client.debug) Logger.log(error as string); // 오류확인
+      if (client.debug) Logger.error(error as any); // 오류확인
       handler.err(message, commandName);
     } finally {
       client.msgdelete(message, 0, true);

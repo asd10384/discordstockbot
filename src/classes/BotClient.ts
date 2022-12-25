@@ -39,7 +39,7 @@ export class BotClient extends Client {
    * 
    * @example
    *    client.onEvent('ready', (client, info) => {
-   *      Logger.log(client?.user.username, '봇이 준비되었습니다.', info) // 출력: OOO 봇이 준비되었습니다. 추가 정보
+   *      Logger.ready(client?.user.username, '봇이 준비되었습니다.', info) // 출력: OOO 봇이 준비되었습니다. 추가 정보
    *    }, ['추가 정보']);
    * 
    * @param event 이벤트명

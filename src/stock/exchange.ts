@@ -18,11 +18,11 @@ const getexchange = async () => {
   if (get.data.success) {
     if (get.data.rates?.KRW) {
       exmoney = get.data.rates.KRW;
-      Logger.log("환율 : " + exmoney.toFixed(2) + "원");
+      Logger.info("환율 : " + exmoney.toFixed(2) + "원");
       return;
     }
   }
-  Logger.log("환율 정보를 가져올수 없음");
+  Logger.error("환율 정보를 가져올수 없음");
 }
 
 export const exchange = (getmoney: string) => new Promise<string>(async (res, _rej) => {
