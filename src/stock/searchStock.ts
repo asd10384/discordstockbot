@@ -1,9 +1,9 @@
 import { client } from "..";
-import { marketType, STOCK } from "./stockdata";
+import { STOCK } from "./stockData";
 import { GuildMember } from "discord.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { exchange } from "./exchange";
-import { stockType } from "./stockdata";
+import { marketType, stockType } from "./stockConfig";
 
 export const searchStock = async (member: GuildMember, market: marketType, name: string): Promise<[ stockType | undefined, EmbedBuilder ]> => {
   const stocklist = STOCK[market];

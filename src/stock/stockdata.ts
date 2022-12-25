@@ -1,52 +1,7 @@
 import axios from "axios";
 import { Logger } from "../utils/Logger";
+import { marketType, stockType } from "./stockConfig";
 // import { writeFileSync } from "fs";
-
-export interface stockType {
-  stockEndType: string; // "stock",
-  itemCode: string; // "005930",
-  reutersCode: string; // "005930",
-  stockName: string; // "삼성전자",
-  sosok: string; // "0",
-  closePrice: string; // "58,100",
-  compareToPreviousClosePrice: string; // "-1,000",
-  compareToPreviousPrice: {
-    code: string; // "5",
-    text: string; // "하락",
-    name: string; // "FALLING"
-  }
-  fluctuationsRatio: string; // "-1.69",
-  accumulatedTradingVolume: string; // "9,789,898",
-  accumulatedTradingValue: string; // "568,107",
-  accumulatedTradingValueKrwHangeul: string; // "5,681억원",
-  localTradedAt: string; // "2022-12-23T15:39:42+09:00",
-  marketValue: string; // "3,468,444",
-  marketValueHangeul: string; // "346조 8,444억원",
-  nav: string; // "N/A",
-  threeMonthEarningRate: string; // "N/A",
-  marketStatus: string; // "CLOSE",
-  tradeStopType: {
-    code: string; // "1",
-    text: string; // "운영.Trading",
-    name: string; // "TRADING"
-  }
-  stockExchangeType: {
-    code: string; // "KS",
-    zoneId: string; // "Asia/Seoul",
-    nationType: string; // "KOR",
-    delayTime: number; // 0,
-    startTime: string; // "0900",
-    endTime: string; // "1530",
-    closePriceSendTime: string; // "1630",
-    nameKor: string; // "코스피",
-    nameEng: string; // "KOSPI",
-    nationCode: string; // "KOR",
-    nationName: string; // "대한민국",
-    name: string; // "KOSPI"
-  }
-}
-
-export type marketType = "KOSPI" | "KOSDAQ" | "NASDAQ";
 
 export var STOCK: {
   KOSPI: stockType[];

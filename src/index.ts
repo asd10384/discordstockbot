@@ -14,4 +14,4 @@ client.onEvent("interactionCreate", onInteractionCreate);
 client.onEvent("messageCreate", onMessageCreate);
 // client.onEvent("messageReactionAdd", onmessageReactionAdd);
 
-import "./stock/stockdata";
+import "./stock/stockData";

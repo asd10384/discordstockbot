@@ -2,6 +2,7 @@ import "dotenv/config";
 import { Guild, GuildMember } from "discord.js";
 import { QuickDB } from "quick.db";
 import { client } from "..";
+import { marketType } from "../stock/stockConfig";
 
 const qdb = new QuickDB({
   filePath: process.env.DB_FILE_PATH || "./dbfile.sqlite"
@@ -24,6 +25,7 @@ interface getguildData {
 }
 
 export interface stocksType {
+  market: marketType;
   code: string;
   name: string;
   price: number;

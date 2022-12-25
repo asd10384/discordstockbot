@@ -2,7 +2,7 @@ import { GuildMember, EmbedBuilder, Guild } from "discord.js";
 import { client } from "../index";
 import { QDB, stocksType } from "../databases/Quickdb";
 import { searchStock } from "./searchStock";
-import { marketType } from "./stockdata";
+import { marketType } from "./stockConfig";
 
 export const sellStock = async (guild: Guild, member: GuildMember, market: marketType, name: string, count: number): Promise<EmbedBuilder> => {
   const findstock = await searchStock(member, market, name);

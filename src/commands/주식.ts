@@ -10,6 +10,7 @@ import { searchStockEmbed } from "../stock/searchStock";
 import { searchMoney } from "../stock/searchMoney";
 import { buyStock } from "../stock/buyStock";
 import { sellStock } from "../stock/sellStock";
+import { getStock } from "../stock/getStockPrice";
 
 /**
  * DB
@@ -40,6 +41,11 @@ export default class implements Command {
         type: ApplicationCommandOptionType.Subcommand,
         name: "돈",
         description: "주식 보유금액 확인"
+      },
+      {
+        type: ApplicationCommandOptionType.Subcommand,
+        name: "보유",
+        description: "보유중인 주식확인"
       },
       {
         type: ApplicationCommandOptionType.Subcommand,
@@ -258,6 +264,10 @@ export default class implements Command {
       des: "보유금액 확인"
     },
     {
+      name: "보유",
+      des: "보유중인 주식확인"
+    },
+    {
       name: "지원금",
       des: "주식 지원금"
     },
@@ -303,6 +313,8 @@ export default class implements Command {
     
     if (cmd.name === "돈") return await interaction.followUp({ embeds: [ await this.money(interaction.guild!, interaction.member as GuildMember) ] });
     
+    if (cmd.name === "보유") return await interaction.followUp({ embeds: [ await this.have(interaction.guild!, interaction.member as GuildMember) ] });
+
     if (cmd.name === "지원금") return await interaction.followUp({ embeds: [ await this.support(interaction.guild!, interaction.member as GuildMember) ] });
     
     if (cmd.name == "검색") {
@@ -440,6 +452,8 @@ export default class implements Command {
 
     if (args[0] === "돈") return message.channel.send({ embeds: [ await this.money(message.guild!, message.member!) ] });
     
+    if (args[0] === "보유") return await message.channel.send({ embeds: [ await this.have(message.guild!, message.member!) ] });
+
     if (args[0] === "지원금") return message.channel.send({ embeds: [ await this.support(message.guild!, message.member!) ] });
     
     if (args[0] === "검색") {
@@ -615,13 +629,56 @@ export default class implements Command {
     });
   }
 
+  async have(guild: Guild, member: GuildMember) {
+    const UDB = await QDB.user.get(guild, member);
+    let text = "【시장】[종목] (현재가) <보유수량>〔손익〕｛투자금액｝「예상수익률」\n";
+    if (UDB.stocks.length == 0) return client.mkembed({
+      author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },
+      title: `** ${member.nickname ? member.nickname : member.user.username} 님의 보유주식 **`,
+      description: `없음`
+    });
+    for (let i=0; i<UDB.stocks.length; i++) {
+      let stock = UDB.stocks[i];
+      let [ nowStockPrice, nowStockPriceErrMsg ] = await getStock(stock.market, stock.code);
+      let marketname = stock.market == "KOSPI" ? "코스피"
+        : stock.market == "KOSDAQ" ? "코스닥"
+        : "나스닥";
+      if (!nowStockPrice) {
+        text += `\n【${marketname}】[${stock.name}] ${nowStockPriceErrMsg}`;
+      } else {
+        let nowPrice = Number(nowStockPrice?.replace(/\,/g,""));
+        let pross = nowPrice - stock.price;
+        text += `\n【${
+          marketname
+        }】[${
+          stock.name
+        }] (${
+          nowStockPrice
+        }원) <${
+          stock.count
+        }주>〔${
+          pross
+        }원〕｛${
+          (stock.price * stock.count).toLocaleString("ko-KR")
+        }원｝「${
+          (nowPrice / stock.price) * 100 - 100
+        }」`;
+      }
+    }
+    return client.mkembed({
+      author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },
+      title: `** ${member.nickname ? member.nickname : member.user.username} 님의 보유주식 **`,
+      description: text
+    });
+  }
+
   async support(guild: Guild, member: GuildMember): Promise<EmbedBuilder> {
     const UDB = await QDB.user.get(guild, member);
     const support_money = 5000000;
     if (UDB.support.money) return client.mkembed({
       author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },
       title: `** 주식 지원금 **`,
-      description: `주식 지원금을 이미 받으셨습니다.\n받은시간 : <t:${UDB.support.time}:F> (<t:${UDB.support.time}:R>)`,
+      description: `주식 지원금을 이미 받으셨습니다.\n받은시간 : <t:${Math.round(UDB.support.time/1000)}:F> (<t:${UDB.support.time}:R>)`,
       color: "Red"
     });
     const check = await QDB.user.set(guild.id, member.id, { support: { money: true, time: Date.now() }, money: UDB.money + support_money });
