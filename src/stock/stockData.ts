@@ -13,7 +13,7 @@ export var STOCK: {
   NASDAQ: []
 };
 
-const getdata = (market: marketType) => new Promise<stockType[]>(async (res, rej) => {
+const getData = (market: marketType) => new Promise<stockType[]>(async (res, rej) => {
   const url = market == "NASDAQ" ? "https://api.stock.naver.com/stock/exchange/NASDAQ/marketValue"
     : `https://m.stock.naver.com/api/stocks/marketValue/${market}`;
   const data = await axios.get(`${url}?page=1&pageSize=60`).catch(() => {
@@ -49,14 +49,14 @@ const getdata = (market: marketType) => new Promise<stockType[]>(async (res, rej
 (() => {
   const market: marketType[] = [ "KOSPI", "KOSDAQ", "NASDAQ" ];
   for (let i of market) {
-    getdata(i).then((val) => {
+    getData(i).then((val) => {
       Logger.info(`${i} 주식 초기화완료 [${val.length}개]`);
       // writeFileSync(i+"_DATA.ts", `let t = [\n  "${val.map(s => s.stockName).join('",\n  "')}"\n];\n`, "utf8");
     }).catch(Logger.error);
   }
   setInterval(() => {
     for (let i of market) {
-      getdata(i).then((val) => {
+      getData(i).then((val) => {
         Logger.info(`${i} 주식 초기화완료 [${val.length}개]`);
       }).catch(Logger.error);
     }
