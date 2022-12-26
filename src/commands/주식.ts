@@ -678,7 +678,7 @@ export default class implements Command {
     if (UDB.support.money) return client.mkembed({
       author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },
       title: `** 주식 지원금 **`,
-      description: `주식 지원금을 이미 받으셨습니다.\n받은시간 : <t:${Math.round(UDB.support.time/1000)}:F> (<t:${UDB.support.time}:R>)`,
+      description: `주식 지원금을 이미 받으셨습니다.\n받은시간 : <t:${Math.round(UDB.support.time/1000)}:F> (<t:${Math.round(UDB.support.time/1000)}:R>)`,
       color: "Red"
     });
     const check = await QDB.user.set(guild.id, member.id, { support: { money: true, time: Date.now() }, money: UDB.money + support_money });

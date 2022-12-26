@@ -51,7 +51,7 @@ const getData = (market: marketType) => new Promise<stockType[]>(async (res, rej
   for (let i of market) {
     getData(i).then((val) => {
       Logger.info(`${i} 주식 초기화완료 [${val.length}개]`);
-      // writeFileSync(i+"_DATA.ts", `let t = [\n  "${val.map(s => s.stockName).join('",\n  "')}"\n];\n`, "utf8");
+      // writeFileSync(i+"_DATA.ts", `let t = ${JSON.stringify(val, undefined, 2)};`, "utf8");
     }).catch(Logger.error);
   }
   setInterval(() => {
