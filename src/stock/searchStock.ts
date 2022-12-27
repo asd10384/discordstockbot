@@ -28,7 +28,7 @@ export const searchStockEmbed = async (member: GuildMember, market: marketType, 
   if (!findstock[0]) return findstock[1];
   const stock = findstock[0];
   let changevalue = "";
-  let money = market === "NASDAQ" ? await exchange(stock.compareToPreviousClosePrice.replace("-","")) : stock.compareToPreviousClosePrice;
+  let money = market === "NASDAQ" ? exchange(stock.compareToPreviousClosePrice.replace("-","")) : stock.compareToPreviousClosePrice;
   switch (stock.compareToPreviousPrice.code) {
     case "2": // 상승
       changevalue = "▲" + money;
@@ -57,7 +57,7 @@ export const searchStockEmbed = async (member: GuildMember, market: marketType, 
       },
       {
         name: `현재가`,
-        value: `${market === "NASDAQ" ? await exchange(stock.closePrice) : stock.closePrice}원`,
+        value: `${market === "NASDAQ" ? exchange(stock.closePrice) : stock.closePrice}원`,
         inline: true
       },
       {

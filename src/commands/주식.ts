@@ -625,7 +625,7 @@ export default class implements Command {
     return client.mkembed({
       author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },
       title: `** 주식 보유금액 **`,
-      description: `${UDB.money}원`
+      description: `${UDB.money.toLocaleString("ko-KR")}원`
     });
   }
 
@@ -685,7 +685,7 @@ export default class implements Command {
     if (check) return client.mkembed({
       author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },
       title: `** 주식 지원금 **`,
-      description: `주식 지원금 ${support_money}원 지급`
+      description: `주식 지원금 ${support_money.toLocaleString("ko-KR")}원 지급`
     });
     return client.mkembed({
       author: { name: member.nickname || member.user.username, iconURL: member.displayAvatarURL({ forceStatic: false }) },

@@ -3,6 +3,7 @@ import { STOCK } from "./stockData";
 import { GuildMember } from "discord.js";
 import { EmbedBuilder } from "@discordjs/builders";
 import { fixNumber, marketType, maxEmbedTextLength } from "./stockConfig";
+import { exchange } from "./exchange";
 
 export const searchMoney = async (member: GuildMember, market: marketType, num: number): Promise<[ EmbedBuilder[][], number, number ]> => {
   const stocklist = STOCK[market];
@@ -18,7 +19,7 @@ export const searchMoney = async (member: GuildMember, market: marketType, num: 
   let stocknumber = 1;
   const stockfilter = stocklist.filter(stock => Number(stock.closePrice.replace(/\,/g,"")) <= num);
   for (let stock of stockfilter) {
-    let stocktext = `${fixNumber(3, stocknumber++)}. ${stock.stockName} [${stock.closePrice}원]\n`;
+    let stocktext = `${fixNumber(3, stocknumber++)}. ${stock.stockName} [${market == "NASDAQ" ? exchange(stock.closePrice) : stock.closePrice}원]\n`;
     if (text.length + stocktext.length > maxEmbedTextLength) {
       if (!output[outputnumber]) output[outputnumber] = [];
       output[outputnumber].push(client.mkembed({

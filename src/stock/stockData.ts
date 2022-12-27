@@ -16,7 +16,13 @@ export var STOCK: {
 const getData = (market: marketType) => new Promise<stockType[]>(async (res, rej) => {
   const url = market == "NASDAQ" ? "https://api.stock.naver.com/stock/exchange/NASDAQ/marketValue"
     : `https://m.stock.naver.com/api/stocks/marketValue/${market}`;
-  const data = await axios.get(`${url}?page=1&pageSize=60`).catch(() => {
+  const data = await axios.get(`${url}?page=1&pageSize=60`, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Accept-Encoding": "gzip,deflate,compress",
+      "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+    }
+  }).catch(() => {
     return {
       status: 404,
       data: undefined
@@ -28,7 +34,13 @@ const getData = (market: marketType) => new Promise<stockType[]>(async (res, rej
     let pcount = Math.ceil(data.data.totalCount/60);
     if (pcount > 1) {
       for (let i=2; i<=pcount; i++) {
-        const data2 = await axios.get(`${url}?page=${i}&pageSize=60`).catch(() => {
+        const data2 = await axios.get(`${url}?page=${i}&pageSize=60`, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept-Encoding": "gzip,deflate,compress",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+          }
+        }).catch(() => {
           return {
             status: 404,
             data: undefined
@@ -60,5 +72,5 @@ const getData = (market: marketType) => new Promise<stockType[]>(async (res, rej
         Logger.info(`${i} 주식 초기화완료 [${val.length}개]`);
       }).catch(Logger.error);
     }
-  }, 1000 * 60 * 60);
+  }, 1000 * 60 * 10);
 })();
